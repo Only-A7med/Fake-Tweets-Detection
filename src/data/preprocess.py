@@ -1,22 +1,30 @@
-"""Clean and augment the TruthSeeker dataset, then trigger the train/test split.
+"""Clean and augment the TruthSeeker dataset, then produce train/test CSVs.
 
-Replicates the paper's preprocessing exactly (PLAN.md §4):
+Cleaning replicates the paper exactly (PLAN.md §4): keep the tweet text
+(``tweet``) and binary label (``BinaryNumTarget``, 1 = real, 0 = fake), fill
+missing text with empty strings, drop entries whose tweet is empty, then apply
+word-swap augmentation — each word is replaced, with probability 0.2, by a
+random word drawn from the corpus vocabulary ("words from the same or other
+tweets").
 
-1. Keep the tweet text (``tweet``) and binary label (``BinaryNumTarget``,
-   1 = real, 0 = fake).
-2. Fill missing text with empty strings, then drop entries whose tweet is
-   empty (the paper's "removal of empty entries").
-3. Word-swap augmentation: each word is replaced, with probability 0.2, by a
-   random word drawn from the corpus vocabulary ("words from the same or
-   other tweets"), growing the dataset to 200,000 rows.
-4. Hand the augmented dataset to ``src.data.split`` for the 80/20 split.
+Two split protocols are supported:
+
+- **paper** (default): augment to 200,000 rows first, then split 80/20 —
+  exactly what the paper describes. Because variants of one source tweet can
+  land on both sides of the split, this leaks training information into the
+  test set; it is kept as the default because this repo is a reproduction.
+- **leakage-safe** (``--leakage-safe``): split the original tweets 80/20
+  first, then augment only the training side up to the paper's training-set
+  size (160,000 rows). The test set contains only original, unseen tweets.
 
 Usage:
-    python -m src.data.preprocess
+    python -m src.data.preprocess                  # paper protocol
+    python -m src.data.preprocess --leakage-safe   # leakage-safe protocol
 """
 
 from __future__ import annotations
 
+import argparse
 import random
 import re
 import sys
@@ -150,16 +158,66 @@ def augment(
     return pd.concat([frame, augmented], ignore_index=True)
 
 
-def main() -> int:
-    """Run the full pipeline: download, clean, augment, save, and split."""
+def split_first_then_augment(
+    frame: pd.DataFrame,
+    train_target_rows: int = config.TRAIN_TARGET_ROWS,
+    test_size: float = config.TEST_SIZE,
+    swap_prob: float = config.WORD_SWAP_PROB,
+    seed: int = config.SEED,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Produce a leakage-safe train/test pair: split originals, augment train only.
+
+    Exact duplicate tweet strings are collapsed first (the source data carries
+    a few hundred, all with consistent labels) — otherwise copies of one tweet
+    could land on both sides of a row-level split. The 80/20 split then happens
+    on unique original tweets, so every test row is an unmodified source tweet
+    absent from training. Augmentation grows only the training side, sampling
+    replacement words exclusively from the training vocabulary — nothing
+    derived from a test tweet can enter training.
+
+    Args:
+        frame: Clean dataset with ``tweet`` and ``label`` columns.
+        train_target_rows: Final training-set size (default: 160,000, the
+            paper protocol's training-set size, for comparability).
+        test_size: Fraction of unique original rows held out for testing.
+        swap_prob: Per-word replacement probability (paper: 0.2).
+        seed: Seed for the split, sampling, and word swapping.
+
+    Returns:
+        ``(train, test)`` dataframes; ``train`` is augmented, ``test`` is not.
+    """
+    unique = frame.drop_duplicates(subset="tweet").reset_index(drop=True)
+    train, test = split.split_dataframe(unique, test_size=test_size, seed=seed)
+    train = augment(train, target_rows=train_target_rows, swap_prob=swap_prob, seed=seed)
+    return train, test
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Run the pipeline: download, clean, augment, and write train/test CSVs."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--leakage-safe",
+        action="store_true",
+        help="split original tweets first, then augment only the training set",
+    )
+    args = parser.parse_args(argv)
+
     csv_path = download.download_dataset()
     print(f"Loading {csv_path} ...")
     frame = load_and_clean(csv_path)
     real, fake = int(frame["label"].sum()), int((frame["label"] == 0).sum())
     print(f"Clean rows: {len(frame):,} (real={real:,}, fake={fake:,})")
+    config.PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+
+    if args.leakage_safe:
+        train, test = split_first_then_augment(frame)
+        train.to_csv(config.TRAIN_SAFE_CSV, index=False)
+        test.to_csv(config.TEST_SAFE_CSV, index=False)
+        print(f"train (augmented): {len(train):,} rows -> {config.TRAIN_SAFE_CSV}")
+        print(f"test (originals only): {len(test):,} rows -> {config.TEST_SAFE_CSV}")
+        return 0
 
     frame = augment(frame)
-    config.PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     frame.to_csv(config.AUGMENTED_CSV, index=False)
     print(f"Augmented dataset: {len(frame):,} rows -> {config.AUGMENTED_CSV}")
     return split.main()

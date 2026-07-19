@@ -28,6 +28,42 @@ AUGMENT_TARGET_ROWS = 200_000
 WORD_SWAP_PROB = 0.2
 TEST_SIZE = 0.2
 
+# Paper protocol: augment first, then split (matches the paper; augmented
+# variants of one source tweet can land on both sides of the split).
 AUGMENTED_CSV = PROCESSED_DIR / "augmented.csv"
 TRAIN_CSV = PROCESSED_DIR / "train.csv"
 TEST_CSV = PROCESSED_DIR / "test.csv"
+
+# Leakage-safe protocol: split the original tweets first, then augment only
+# the training side up to the paper's training-set size. The test set stays
+# un-augmented, so no source tweet (or variant of it) crosses the split.
+TRAIN_TARGET_ROWS = int(AUGMENT_TARGET_ROWS * (1 - TEST_SIZE))  # 160,000
+TRAIN_SAFE_CSV = PROCESSED_DIR / "train_safe.csv"
+TEST_SAFE_CSV = PROCESSED_DIR / "test_safe.csv"
+
+# Train/test CSVs per evaluation protocol.
+PROTOCOL_SPLITS = {
+    "paper": (TRAIN_CSV, TEST_CSV),
+    "safe": (TRAIN_SAFE_CSV, TEST_SAFE_CSV),
+}
+
+# Baseline hyperparameters (paper: TF-IDF 10k features, uni+bigrams; LogReg
+# capped at 1,000 iterations).
+TFIDF_MAX_FEATURES = 10_000
+TFIDF_NGRAM_RANGE = (1, 2)
+LOGREG_MAX_ITER = 1000
+
+# BiLSTM hyperparameters. Embedding dim, epochs, loss, and optimizer come from
+# the paper; the sizes the paper does not specify are marked and were chosen
+# from the EDA (sequence length covers >99% of tweets) or common defaults.
+EMBEDDING_DIM = 100
+EPOCHS = 10
+LSTM_UNITS = 64  # not specified in the paper
+DENSE_UNITS = 64  # not specified in the paper
+MAX_VOCAB = 50_000  # not specified in the paper
+MAX_SEQUENCE_LEN = 64  # not specified in the paper; >99% of tweets fit
+BATCH_SIZE = 128  # not specified in the paper
+
+# Evaluation outputs.
+REPORTS_DIR = PROJECT_ROOT / "reports"
+FIGURES_DIR = REPORTS_DIR / "figures"

@@ -7,7 +7,14 @@ import pytest
 
 from src import config
 from src.data.download import find_dataset_csv
-from src.data.preprocess import augment, build_vocabulary, clean_text, load_and_clean, word_swap
+from src.data.preprocess import (
+    augment,
+    build_vocabulary,
+    clean_text,
+    load_and_clean,
+    split_first_then_augment,
+    word_swap,
+)
 from src.data.split import split_dataframe
 
 # --- clean_text ---
@@ -166,6 +173,54 @@ def test_split_dataframe_is_deterministic():
     _, first = split_dataframe(_hundred_rows(), seed=config.SEED)
     _, second = split_dataframe(_hundred_rows(), seed=config.SEED)
     assert first["tweet"].tolist() == second["tweet"].tolist()
+
+
+# --- leakage-safe protocol ---
+
+
+def _unique_word_frame(n=50):
+    """Every word is unique to its tweet, so any word crossing the split proves leakage."""
+    return pd.DataFrame(
+        {
+            "tweet": [f"alpha{i} beta{i} gamma{i}" for i in range(n)],
+            "label": [i % 2 for i in range(n)],
+        }
+    )
+
+
+def test_leakage_safe_no_source_tweet_material_crosses_the_split():
+    train, test = split_first_then_augment(_unique_word_frame(), train_target_rows=60)
+    test_words = {word for tweet in test["tweet"] for word in tweet.split()}
+    for tweet in train["tweet"]:
+        assert set(tweet.split()).isdisjoint(test_words)
+
+
+def test_leakage_safe_test_rows_are_unaugmented_originals():
+    frame = _unique_word_frame()
+    train, test = split_first_then_augment(frame, train_target_rows=60)
+    assert len(test) == 10
+    assert set(test["tweet"]) <= set(frame["tweet"])
+
+
+def test_leakage_safe_train_reaches_target_size():
+    train, _ = split_first_then_augment(_unique_word_frame(), train_target_rows=60)
+    assert len(train) == 60
+
+
+def test_leakage_safe_collapses_source_duplicates_before_splitting():
+    # The real dataset contains repeated tweet strings; copies of one string
+    # must never end up on both sides of the split.
+    frame = pd.concat([_unique_word_frame()] * 3, ignore_index=True)
+    train, test = split_first_then_augment(frame, train_target_rows=60)
+    assert len(test) == 10  # 20% of the 50 unique tweets, not of the 150 rows
+    assert set(train["tweet"]).isdisjoint(set(test["tweet"]))
+
+
+def test_leakage_safe_is_deterministic():
+    first_train, first_test = split_first_then_augment(_unique_word_frame(), train_target_rows=60)
+    second_train, second_test = split_first_then_augment(_unique_word_frame(), train_target_rows=60)
+    pd.testing.assert_frame_equal(first_train, second_train)
+    pd.testing.assert_frame_equal(first_test, second_test)
 
 
 # --- download helpers ---
