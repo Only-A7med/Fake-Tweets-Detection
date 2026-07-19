@@ -19,4 +19,6 @@ known-first-party = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q"
+# --basetemp keeps pytest's temp root inside the workspace; the default under
+# the OS temp dir can carry broken ACLs on Windows machines.
+addopts = "-q --basetemp=.pytest_tmp"

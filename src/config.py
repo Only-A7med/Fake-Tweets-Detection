@@ -15,7 +15,7 @@ MODELS_DIR = PROJECT_ROOT / "models"
 CACHE_DIR = Path.home() / ".cache" / "tweetguard"
 
 # TruthSeeker 2023 (UNB CIC), mirrored on Kaggle. Public — kagglehub needs no API key.
-KAGGLE_DATASET = "paulinepeps/truth-seeker-dataset-2023-truthseeker2023"
+KAGGLE_DATASET = "sudishbasnet/truthseekertwitterdataset2023"
 DATASET_CSV_NAME = "Truth_Seeker_Model_Dataset.csv"
 TEXT_COLUMN = "tweet"
 LABEL_COLUMN = "BinaryNumTarget"  # 1 = real, 0 = fake

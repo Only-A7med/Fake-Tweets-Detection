@@ -7,6 +7,7 @@ venv/
 
 # --- Tooling caches ---
 .pytest_cache/
+.pytest_tmp/
 .ruff_cache/
 .ipynb_checkpoints/
 .coverage
@@ -36,3 +37,4 @@ mlruns/
 Thumbs.db
 .vscode/
 .idea/
+.claude/
