@@ -1,0 +1,38 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# --- Tooling caches ---
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.coverage
+htmlcov/
+
+# --- Data: datasets and embeddings are never committed (CLAUDE.md hard rule) ---
+/data/
+*.csv
+glove*.txt
+glove*.zip
+
+# --- Model artifacts: large binaries live on HF Hub, not in git ---
+/models/
+
+# --- Secrets and credentials ---
+.env
+kaggle.json
+
+# --- Experiment tracking (M7) ---
+mlruns/
+
+# --- Paper manuscript (IEEE copyright — not for publication in this repo) ---
+*.docx
+
+# --- OS / editor noise ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

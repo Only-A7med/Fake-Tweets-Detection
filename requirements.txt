@@ -1,0 +1,9 @@
+# Runtime + training-pipeline dependencies (pinned for reproducibility, Python 3.11).
+# Dev/QA tooling lives in requirements-dev.txt.
+flask==3.1.3
+gunicorn==26.0.0
+kagglehub==1.0.2
+matplotlib==3.11.1
+pandas==2.3.3
+scikit-learn==1.9.0
+tensorflow==2.21.0

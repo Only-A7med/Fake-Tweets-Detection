@@ -1,0 +1,8 @@
+# Normalise all text files to LF in the repository.
+* text=auto eol=lf
+
+# Binary artifacts.
+*.png binary
+*.gif binary
+*.keras binary
+*.joblib binary
