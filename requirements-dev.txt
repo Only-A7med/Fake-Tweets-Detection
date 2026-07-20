@@ -5,5 +5,7 @@
 ipykernel==7.3.0
 mlflow==3.14.0
 nbconvert==7.17.1
+pre-commit==4.5.1
 pytest==9.1.1
+pytest-cov==7.1.0
 ruff==0.15.22
