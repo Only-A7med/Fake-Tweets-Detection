@@ -1,0 +1,25 @@
+# Keep the image to code + requirements; data, artifacts, and tooling stay out.
+.git/
+.github/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.pytest_tmp/
+.ruff_cache/
+data/
+models/
+notebooks/
+reports/
+mlruns/
+tests/
+scripts/
+*.csv
+*.docx
+glove*
+.env
+kaggle.json
+README.md
+PLAN.md
+CLAUDE.md

@@ -2,6 +2,7 @@
 # Dev/QA tooling lives in requirements-dev.txt.
 flask==3.1.3
 gunicorn==26.0.0
+huggingface_hub==1.24.0
 kagglehub==1.0.2
 matplotlib==3.11.1
 pandas==2.3.3
