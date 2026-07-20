@@ -20,7 +20,9 @@ DATASET_CSV_NAME = "Truth_Seeker_Model_Dataset.csv"
 TEXT_COLUMN = "tweet"
 LABEL_COLUMN = "BinaryNumTarget"  # 1 = real, 0 = fake
 
-GLOVE_URL = "https://nlp.stanford.edu/data/glove.6B.zip"
+# Official Stanford NLP mirror on HF (CDN-backed; nlp.stanford.edu/data/glove.6B.zip
+# serves the same archive but is heavily throttled).
+GLOVE_URL = "https://huggingface.co/stanfordnlp/glove/resolve/main/glove.6B.zip"
 GLOVE_FILE = "glove.6B.100d.txt"
 
 # Paper hyperparameters (replicate exactly).

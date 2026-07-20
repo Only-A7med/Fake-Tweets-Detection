@@ -1,6 +1,9 @@
-# Development tooling: tests, linting, and notebook execution.
+# Development tooling: tests, linting, experiment tracking, notebook execution.
+# (mlflow lives here, not in requirements.txt, so the deploy image stays lean —
+# training runs in dev environments, never in the container.)
 -r requirements.txt
 ipykernel==7.3.0
+mlflow==3.14.0
 nbconvert==7.17.1
 pytest==9.1.1
 ruff==0.15.22
