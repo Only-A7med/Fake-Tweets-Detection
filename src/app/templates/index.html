@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TweetGuard — Fake Tweet Detection</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="card">
+    <h1>TweetGuard</h1>
+    <p class="subtitle">
+      Fake-tweet detection from the paper
+      <a href="https://doi.org/10.1109/ICCIKE67021.2025.11318261" target="_blank" rel="noopener">
+        “Fake Tweets Detection using Bi-LSTM with GloVe Embedding” (ICCIKE 2025)</a>.
+      Baseline vs. deep model, side by side ({{ protocol }} protocol artifacts).
+    </p>
+
+    <form id="form">
+      <label for="text" class="visually-hidden">Tweet text</label>
+      <textarea id="text" maxlength="{{ max_chars }}" rows="4"
+                placeholder="Paste a tweet (≤ {{ max_chars }} characters)…" required></textarea>
+      <div class="row">
+        <span id="counter">0 / {{ max_chars }}</span>
+        <button id="submit" type="submit">Check tweet</button>
+      </div>
+    </form>
+
+    <p id="error" class="error" hidden></p>
+
+    <section id="results" hidden>
+      <div class="result" id="result-baseline">
+        <h2>TF-IDF + Logistic Regression <small>(baseline)</small></h2>
+        <p class="verdict"></p>
+        <div class="bar"><div class="fill"></div></div>
+      </div>
+      <div class="result" id="result-bilstm">
+        <h2>BiLSTM + GloVe <small>(deep model)</small></h2>
+        <p class="verdict"></p>
+        <div class="bar"><div class="fill"></div></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("form");
+    const textarea = document.getElementById("text");
+    const counter = document.getElementById("counter");
+    const errorBox = document.getElementById("error");
+    const results = document.getElementById("results");
+    const submit = document.getElementById("submit");
+
+    textarea.addEventListener("input", () => {
+      counter.textContent = `${textarea.value.length} / {{ max_chars }}`;
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      errorBox.hidden = true;
+      submit.disabled = true;
+      submit.textContent = "Checking…";
+      try {
+        const response = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: textarea.value }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || `HTTP ${response.status}`);
+        results.hidden = false;
+        for (const prediction of data.predictions) {
+          const card = document.getElementById(`result-${prediction.model}`);
+          if (!card) continue;
+          const percent = (prediction.confidence * 100).toFixed(1);
+          card.querySelector(".verdict").textContent =
+            `${prediction.label.toUpperCase()} — ${percent}% confidence`;
+          const fill = card.querySelector(".fill");
+          fill.style.width = `${percent}%`;
+          fill.className = `fill ${prediction.label}`;
+        }
+      } catch (error) {
+        results.hidden = true;
+        errorBox.textContent = error.message;
+        errorBox.hidden = false;
+      } finally {
+        submit.disabled = false;
+        submit.textContent = "Check tweet";
+      }
+    });
+  </script>
+</body>
+</html>
