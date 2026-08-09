@@ -13,7 +13,7 @@ venv/
 .coverage
 htmlcov/
 
-# --- Data: datasets and embeddings are never committed (CLAUDE.md hard rule) ---
+# --- Data: datasets and embeddings are never committed ---
 /data/
 *.csv
 glove*.txt
@@ -28,6 +28,7 @@ kaggle.json
 
 # --- Experiment tracking (M7) ---
 mlruns/
+mlflow.db
 
 # --- Paper manuscript (IEEE copyright — not for publication in this repo) ---
 *.docx
@@ -38,3 +39,8 @@ Thumbs.db
 .vscode/
 .idea/
 .claude/
+
+# --- Internal project notes (not for publication) ---
+CLAUDE.md
+PLAN.md
+CHECKLIST.md

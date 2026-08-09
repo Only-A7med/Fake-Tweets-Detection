@@ -1,6 +1,6 @@
 """Central configuration: paths, dataset identifiers, and paper hyperparameters.
 
-The augmentation/split constants come from the paper (PLAN.md §4) and must not
+The augmentation/split constants come from the paper and must not
 be changed if the goal is to reproduce its results.
 """
 

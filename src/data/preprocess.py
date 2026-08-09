@@ -1,6 +1,6 @@
 """Clean and augment the TruthSeeker dataset, then produce train/test CSVs.
 
-Cleaning replicates the paper exactly (PLAN.md §4): keep the tweet text
+Cleaning replicates the paper exactly: keep the tweet text
 (``tweet``) and binary label (``BinaryNumTarget``, 1 = real, 0 = fake), fill
 missing text with empty strings, drop entries whose tweet is empty, then apply
 word-swap augmentation — each word is replaced, with probability 0.2, by a
