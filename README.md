@@ -17,13 +17,28 @@ license: mit
 
 Companion code and live demo for the IEEE paper:
 
-> A. Tariq, S. I. Khan, M. Imran, A. Mustafa, "Fake Tweets Detection using Bi-LSTM with GloVe
-> Embedding," *Proc. ICCIKE 2025*, IEEE. DOI:
-> [10.1109/ICCIKE67021.2025.11318261](https://doi.org/10.1109/ICCIKE67021.2025.11318261)
+> A. Tariq, S. I. Khan, M. Imran, A. Mustafa and Z. Elgamal, "Fake Tweets Detection using Bi-LSTM
+> with GloVe Embedding," in *2025 International Conference on Computational Intelligence and
+> Knowledge Economy (ICCIKE)*, Dubai, United Arab Emirates, 2025, pp. 737–742,
+> doi: [10.1109/ICCIKE67021.2025.11318261](https://doi.org/10.1109/ICCIKE67021.2025.11318261).
+> IEEE Xplore: [ieeexplore.ieee.org/document/11318261](https://ieeexplore.ieee.org/document/11318261)
 
 Two models trained on the [TruthSeeker 2023](https://www.unb.ca/cic/datasets/truthseeker-2023.html)
 dataset classify tweets as **real** or **fake**: a TF-IDF + Logistic Regression baseline and the
 paper's primary BiLSTM + GloVe model, served side by side from a small Flask app.
+
+## Research Team
+
+Authors of the ICCIKE 2025 paper, in published order.
+Affiliations use each institution's current official name.
+
+| # | Author | Affiliation | Profile |
+|---|---|---|---|
+| 1 | Anees Tariq | Department of Robotics & Artificial Intelligence, SZABIST University, Islamabad, Pakistan | [IEEE Xplore](https://ieeexplore.ieee.org/author/681085073589134) |
+| 2 | Saad Irfan Khan | Department of Robotics & Artificial Intelligence, SZABIST University, Islamabad, Pakistan | [IEEE Xplore](https://ieeexplore.ieee.org/author/956386687115951) |
+| 3 | Muhammad Imran | Department of Robotics & Artificial Intelligence, SZABIST University, Islamabad, Pakistan | [IEEE Xplore](https://ieeexplore.ieee.org/author/379555213025616) |
+| 4 | Ahmad Mustafa | School of Computing, Skyline University College, UAE | [IEEE Xplore](https://ieeexplore.ieee.org/author/37088568836) · [ORCID](https://orcid.org/0009-0000-6429-9070) · [GitHub](https://github.com/Only-A7med) |
+| 5 | Dr. Zenab Elgamal | School of Computing, Skyline University College, Dubai, UAE | [IEEE Xplore](https://ieeexplore.ieee.org/author/37088536515) |
 
 ## Architecture
 
