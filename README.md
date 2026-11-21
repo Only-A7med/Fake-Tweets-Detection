@@ -29,15 +29,16 @@ paper's primary BiLSTM + GloVe model, served side by side from a small Flask app
 ## Research Team
 
 Authors of the ICCIKE 2025 paper, in published order.
-Affiliations use each institution's current official name.
+Affiliations are as confirmed by author 4, who maintains this repository. Where an author has
+since moved, the current institution is shown on a second line.
 
 | # | Author | Affiliation | Profile |
 |---|---|---|---|
 | 1 | Anees Tariq | Department of Robotics & Artificial Intelligence, SZABIST University, Islamabad, Pakistan | [IEEE Xplore](https://ieeexplore.ieee.org/author/681085073589134) |
 | 2 | Saad Irfan Khan | Department of Robotics & Artificial Intelligence, SZABIST University, Islamabad, Pakistan | [IEEE Xplore](https://ieeexplore.ieee.org/author/956386687115951) |
 | 3 | Muhammad Imran | Department of Robotics & Artificial Intelligence, SZABIST University, Islamabad, Pakistan | [IEEE Xplore](https://ieeexplore.ieee.org/author/379555213025616) |
-| 4 | Ahmad Mustafa | School of Computing, Skyline University College, UAE | [IEEE Xplore](https://ieeexplore.ieee.org/author/37088568836) · [ORCID](https://orcid.org/0009-0000-6429-9070) · [GitHub](https://github.com/Only-A7med) |
-| 5 | Dr. Zenab Elgamal | School of Computing, Skyline University College, Dubai, UAE | [IEEE Xplore](https://ieeexplore.ieee.org/author/37088536515) |
+| 4 | Ahmad Mustafa | School of Computing, Skyline University College, Sharjah, UAE<br>*Current: American University of Ras Al Khaimah (AURAK), Ras Al Khaimah, UAE* | [IEEE Xplore](https://ieeexplore.ieee.org/author/37088568836) · [ORCID](https://orcid.org/0009-0000-6429-9070) · [GitHub](https://github.com/Only-A7med) |
+| 5 | Dr. Zenab Elgamal | School of Computing, Skyline University College, Sharjah, UAE | [IEEE Xplore](https://ieeexplore.ieee.org/author/37088536515) |
 
 ## Architecture
 
@@ -152,10 +153,14 @@ Measured on an Intel Core i5-13500H (12 cores / 16 threads), 15.6 GB RAM, **CPU 
 3.11.9 with TensorFlow 2.21.0, Keras 3.15.1, NumPy 2.4.6 and scikit-learn 1.9.0. The MLflow store
 is local and not committed.
 
-Those exact artifacts are published in the private model repository
+Those exact artifacts are published in the public model repository
 [`Only-A7med/fake-tweets-detection`](https://huggingface.co/Only-A7med/fake-tweets-detection) at
 revision `5624bbdaafe313bfc14c6d00d50a6ef274c03357`; its model card repeats these numbers next to
 the data and embedding licences. They are the first weights ever published for this project.
+
+That revision is what the English regression guard pins and downloads, and it stays pinned. A later
+model card edit moved the repository head to `2ec94a8fd81f0587f4d8e4d0ffd2e0a59d222124`, which
+changed `README.md` on the Hub only; every weight file is byte-identical to the pinned revision.
 
 ## Deployment (tooling only — no public demo yet)
 
@@ -172,9 +177,9 @@ model repository:
 python scripts/upload_artifacts.py --repo Only-A7med/fake-tweets-detection
 ```
 
-The trained artifacts live in the **private** model repository
+The trained artifacts live in the **public** model repository
 [`Only-A7med/fake-tweets-detection`](https://huggingface.co/Only-A7med/fake-tweets-detection), so
-the start-up download needs a read token for it. To run the container, set
+the start-up download needs no token. To run the container, set
 `TWEETGUARD_MODEL_REPO=Only-A7med/fake-tweets-detection`:
 
 ```bash

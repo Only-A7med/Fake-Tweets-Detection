@@ -10,7 +10,7 @@ authors:
   - given-names: Ahmad
     family-names: Mustafa
     orcid: "https://orcid.org/0009-0000-6429-9070"
-    affiliation: "School of Computing, Skyline University College, UAE"
+    affiliation: "American University of Ras Al Khaimah (AURAK), Ras Al Khaimah, UAE"
 repository-code: "https://github.com/Only-A7med/Fake-Tweets-Detection"
 license: MIT
 keywords:
@@ -35,10 +35,10 @@ preferred-citation:
     - given-names: Ahmad
       family-names: Mustafa
       orcid: "https://orcid.org/0009-0000-6429-9070"
-      affiliation: "School of Computing, Skyline University College, UAE"
+      affiliation: "School of Computing, Skyline University College, Sharjah, UAE"
     - given-names: Zenab
       family-names: Elgamal
-      affiliation: "School of Computing, Skyline University College, Dubai, UAE"
+      affiliation: "School of Computing, Skyline University College, Sharjah, UAE"
   collection-title: "2025 International Conference on Computational Intelligence and Knowledge Economy (ICCIKE)"
   conference:
     name: "2025 International Conference on Computational Intelligence and Knowledge Economy (ICCIKE)"
