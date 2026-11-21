@@ -157,6 +157,10 @@ Those exact artifacts are published in the public model repository
 revision `5624bbdaafe313bfc14c6d00d50a6ef274c03357`; its model card repeats these numbers next to
 the data and embedding licences. They are the first weights ever published for this project.
 
+That revision is what the English regression guard pins and downloads, and it stays pinned. A later
+model card edit moved the repository head to `2ec94a8fd81f0587f4d8e4d0ffd2e0a59d222124`, which
+changed `README.md` on the Hub only; every weight file is byte-identical to the pinned revision.
+
 ## Deployment (tooling only — no public demo yet)
 
 **There is no public demo.** No Hugging Face Space has been created, so nothing is deployed and
