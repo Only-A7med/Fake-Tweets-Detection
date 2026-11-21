@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this software, please cite both the software and the paper below."
 title: "TweetGuard — Fake Tweet Detection"
 abstract: >-
-  Companion implementation and live demonstration of the ICCIKE 2025 paper "Fake Tweets Detection
+  Companion implementation of the ICCIKE 2025 paper "Fake Tweets Detection
   using Bi-LSTM with GloVe Embedding": a TF-IDF + Logistic Regression baseline and a bidirectional
   LSTM with GloVe embeddings, served side by side from a Flask application.
 type: software
@@ -12,7 +12,6 @@ authors:
     orcid: "https://orcid.org/0009-0000-6429-9070"
     affiliation: "School of Computing, Skyline University College, UAE"
 repository-code: "https://github.com/Only-A7med/Fake-Tweets-Detection"
-url: "https://huggingface.co/spaces/Only-A7med/tweetguard"
 license: MIT
 keywords:
   - fake tweet detection
