@@ -127,6 +127,11 @@ def test_predictions_match_the_golden_values(pinned_config, protocol, model_name
             if difference > worst_difference:
                 worst_input, worst_difference = input_key, difference
 
+    # Printed on success too (visible with -s), so the drift between the machine
+    # the golden values were generated on and the machine running the guard is a
+    # recorded number rather than a pass/fail bit.
+    print(f"golden-drift {key}: max probability difference {worst_difference:.3e}")
+
     assert not label_mismatches, f"{key}: labels changed: {label_mismatches}"
     assert worst_difference <= support.PROBABILITY_TOLERANCE, (
         f"{key}: largest probability difference {worst_difference:.3e} exceeds "
