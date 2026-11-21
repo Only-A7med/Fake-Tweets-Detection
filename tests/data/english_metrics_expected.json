@@ -1,0 +1,68 @@
+{
+  "note": "Frozen expectation for the English results. reports/metrics.json stays the single source of truth; these are the values it held when the English pipeline was frozen, so any edit to it fails the guard. Update only with a measured retraining run.",
+  "source": "reports/metrics.json",
+  "measured_on": "2026-11-21",
+  "field_count": 24,
+  "fields": {
+    "paper/baseline/accuracy": 0.97215,
+    "paper/baseline/precision": 0.9714424007744433,
+    "paper/baseline/recall": 0.974555695833738,
+    "paper/baseline/f1": 0.9729965579095361,
+    "paper/baseline/n_test": 40000,
+    "paper/baseline/confusion_matrix": [
+      [
+        18816,
+        590
+      ],
+      [
+        524,
+        20070
+      ]
+    ],
+    "paper/bilstm/accuracy": 0.9684,
+    "paper/bilstm/precision": 0.9751253564054665,
+    "paper/bilstm/recall": 0.9631931630572012,
+    "paper/bilstm/f1": 0.9691225327340238,
+    "paper/bilstm/n_test": 40000,
+    "paper/bilstm/confusion_matrix": [
+      [
+        18900,
+        506
+      ],
+      [
+        758,
+        19836
+      ]
+    ],
+    "safe/baseline/accuracy": 0.9774287419788091,
+    "safe/baseline/precision": 0.9762387713706172,
+    "safe/baseline/recall": 0.9798589398676653,
+    "safe/baseline/f1": 0.9780455056791378,
+    "safe/baseline/n_test": 26804,
+    "safe/baseline/confusion_matrix": [
+      [
+        12723,
+        328
+      ],
+      [
+        277,
+        13476
+      ]
+    ],
+    "safe/bilstm/accuracy": 0.9583271153559171,
+    "safe/bilstm/precision": 0.9287459283387622,
+    "safe/bilstm/recall": 0.9951283356358612,
+    "safe/bilstm/f1": 0.9607918845870336,
+    "safe/bilstm/n_test": 26804,
+    "safe/bilstm/confusion_matrix": [
+      [
+        12001,
+        1050
+      ],
+      [
+        67,
+        13686
+      ]
+    ]
+  }
+}
