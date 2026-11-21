@@ -152,7 +152,7 @@ Measured on an Intel Core i5-13500H (12 cores / 16 threads), 15.6 GB RAM, **CPU 
 3.11.9 with TensorFlow 2.21.0, Keras 3.15.1, NumPy 2.4.6 and scikit-learn 1.9.0. The MLflow store
 is local and not committed.
 
-Those exact artifacts are published in the private model repository
+Those exact artifacts are published in the public model repository
 [`Only-A7med/fake-tweets-detection`](https://huggingface.co/Only-A7med/fake-tweets-detection) at
 revision `5624bbdaafe313bfc14c6d00d50a6ef274c03357`; its model card repeats these numbers next to
 the data and embedding licences. They are the first weights ever published for this project.
@@ -172,9 +172,9 @@ model repository:
 python scripts/upload_artifacts.py --repo Only-A7med/fake-tweets-detection
 ```
 
-The trained artifacts live in the **private** model repository
+The trained artifacts live in the **public** model repository
 [`Only-A7med/fake-tweets-detection`](https://huggingface.co/Only-A7med/fake-tweets-detection), so
-the start-up download needs a read token for it. To run the container, set
+the start-up download needs no token. To run the container, set
 `TWEETGUARD_MODEL_REPO=Only-A7med/fake-tweets-detection`:
 
 ```bash
