@@ -4,7 +4,7 @@ Run after training both models locally. Requires a write token: either run
 ``hf auth login`` first or set the ``HF_TOKEN`` env var.
 
 Usage:
-    python scripts/upload_artifacts.py --repo <user>/tweetguard-models
+    python scripts/upload_artifacts.py --repo <user>/fake-tweets-detection
 """
 
 from __future__ import annotations
@@ -28,7 +28,9 @@ EXPECTED = [
 def main(argv: list[str] | None = None) -> int:
     """Create the model repo if needed and upload the local ``models/`` tree."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--repo", required=True, help="target repo id, e.g. user/tweetguard-models")
+    parser.add_argument(
+        "--repo", required=True, help="target repo id, e.g. user/fake-tweets-detection"
+    )
     args = parser.parse_args(argv)
 
     missing = [name for name in EXPECTED if not (MODELS_DIR / name).exists()]

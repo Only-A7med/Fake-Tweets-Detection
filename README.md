@@ -13,9 +13,8 @@ license: mit
 
 [![CI](https://github.com/Only-A7med/Fake-Tweets-Detection/actions/workflows/ci.yml/badge.svg)](https://github.com/Only-A7med/Fake-Tweets-Detection/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![HF Space](https://img.shields.io/badge/%F0%9F%A4%97%20Demo-HF%20Spaces-blue)](https://huggingface.co/spaces/Only-A7med/tweetguard)
 
-Companion code and live demo for the IEEE paper:
+Companion code for the IEEE paper:
 
 > A. Tariq, S. I. Khan, M. Imran, A. Mustafa and Z. Elgamal, "Fake Tweets Detection using Bi-LSTM
 > with GloVe Embedding," in *2025 International Conference on Computational Intelligence and
@@ -67,7 +66,7 @@ This repo evaluates under **two protocols**:
   information leaks into the test set.
 - **leakage-safe** — split original tweets 80/20 first, then augment only the training side.
   Every test row is an unmodified tweet never seen (even as a variant) in training. These are the
-  honest generalisation numbers, and what the live demo serves.
+  honest generalisation numbers, and the set the Flask app serves by default.
 
 | Protocol | Model | Accuracy | Precision | Recall | F1 | Test n |
 |---|---|---|---|---|---|---|
@@ -133,24 +132,58 @@ per-epoch curves, test accuracy, and artifacts. Inspect them with `mlflow ui`. L
 varied to sanity-check the paper's architecture choices (see `--lstm-units` /
 `--dense-units` / `--no-save` on `train_bilstm`).
 
-## Deployment (Hugging Face Spaces, Docker runtime)
+### Provenance of the published results
 
-The image never contains the model weights; they are pulled at container start from a HF model
-repo:
+The results table above was first measured in an earlier training round **whose MLflow store was
+not preserved**, so those numbers carried no run identifiers. All four models were therefore
+retrained from scratch with the same code, the same `src/config.py` and seed 42, and the retrained
+metrics reproduced the committed figures **exactly** — every one of the 24 fields in
+`reports/metrics.json`, at full floating-point precision, and the six figures in
+`reports/figures/` byte for byte. The table is unchanged; it now has traceable provenance:
+
+| Protocol | Model | MLflow run | Training time |
+|---|---|---|---|
+| paper | TF-IDF + LogReg | `204879f821a54d9085c7e8e0f0103cf1` | 32.1 s |
+| paper | BiLSTM + GloVe | `3ffff24580444d2ba6bcfb64269edb65` | 19.5 min |
+| leakage-safe | TF-IDF + LogReg | `22ac0f6d2ab04f259b2c45e3b66d54db` | 34.6 s |
+| leakage-safe | BiLSTM + GloVe | `5bc1da65ad18400d804c6f122a575af1` | 18.6 min |
+
+Measured on an Intel Core i5-13500H (12 cores / 16 threads), 15.6 GB RAM, **CPU only**, Python
+3.11.9 with TensorFlow 2.21.0, Keras 3.15.1, NumPy 2.4.6 and scikit-learn 1.9.0. The MLflow store
+is local and not committed.
+
+Those exact artifacts are published in the private model repository
+[`Only-A7med/fake-tweets-detection`](https://huggingface.co/Only-A7med/fake-tweets-detection) at
+revision `5624bbdaafe313bfc14c6d00d50a6ef274c03357`; its model card repeats these numbers next to
+the data and embedding licences. They are the first weights ever published for this project.
+
+## Deployment (tooling only — no public demo yet)
+
+**There is no public demo.** No Hugging Face Space has been created, so nothing is deployed and
+there is no hosted endpoint to try. What exists is the deployment tooling: the Docker image, the
+start-up artifact download, and the upload script. Deploying a Space is planned for a later pull
+request.
+
+The image never contains the model weights; they are pulled at container start from a Hugging Face
+model repository:
 
 ```bash
 # one-time: upload trained artifacts (needs `hf auth login` with a write token)
-python scripts/upload_artifacts.py --repo Only-A7med/tweetguard-models
+python scripts/upload_artifacts.py --repo Only-A7med/fake-tweets-detection
 ```
 
-Create a Docker-runtime Space, push this repo to it, and set the Space variable
-`TWEETGUARD_MODEL_REPO=Only-A7med/tweetguard-models`. The YAML front-matter at the top of this
-README configures the Space (port 7860). Local container:
+The trained artifacts live in the **private** model repository
+[`Only-A7med/fake-tweets-detection`](https://huggingface.co/Only-A7med/fake-tweets-detection), so
+the start-up download needs a read token for it. To run the container, set
+`TWEETGUARD_MODEL_REPO=Only-A7med/fake-tweets-detection`:
 
 ```bash
 docker build -t tweetguard .
-docker run -p 7860:7860 -e TWEETGUARD_MODEL_REPO=Only-A7med/tweetguard-models tweetguard
+docker run -p 7860:7860 -e TWEETGUARD_MODEL_REPO=Only-A7med/fake-tweets-detection tweetguard
 ```
+
+The YAML front-matter at the top of this README is Space configuration (Docker runtime, port 7860),
+kept ready for that later deployment.
 
 ## Repository layout
 
@@ -172,7 +205,7 @@ tests/           # 75 tests, 87% coverage on src/
 - Hyperparameters not specified in the paper (LSTM units, vocab size, sequence length, batch
   size) are marked as such in `src/config.py`.
 - The paper's augment-then-split protocol is reproduced as published; the leakage-safe protocol
-  exists because the honest generalisation number matters for a deployed demo.
+  exists because the honest generalisation number is the one worth quoting.
 
 ## License
 
