@@ -36,8 +36,8 @@ Affiliations use each institution's current official name.
 | 1 | Anees Tariq | Department of Robotics & Artificial Intelligence, SZABIST University, Islamabad, Pakistan | [IEEE Xplore](https://ieeexplore.ieee.org/author/681085073589134) |
 | 2 | Saad Irfan Khan | Department of Robotics & Artificial Intelligence, SZABIST University, Islamabad, Pakistan | [IEEE Xplore](https://ieeexplore.ieee.org/author/956386687115951) |
 | 3 | Muhammad Imran | Department of Robotics & Artificial Intelligence, SZABIST University, Islamabad, Pakistan | [IEEE Xplore](https://ieeexplore.ieee.org/author/379555213025616) |
-| 4 | Ahmad Mustafa | School of Computing, Skyline University College, UAE | [IEEE Xplore](https://ieeexplore.ieee.org/author/37088568836) · [ORCID](https://orcid.org/0009-0000-6429-9070) · [GitHub](https://github.com/Only-A7med) |
-| 5 | Dr. Zenab Elgamal | School of Computing, Skyline University College, Dubai, UAE | [IEEE Xplore](https://ieeexplore.ieee.org/author/37088536515) |
+| 4 | Ahmad Mustafa | School of Computing, Skyline University College, Sharjah, UAE<br>*Current: American University of Ras Al Khaimah (AURAK), Ras Al Khaimah, UAE* | [IEEE Xplore](https://ieeexplore.ieee.org/author/37088568836) · [ORCID](https://orcid.org/0009-0000-6429-9070) · [GitHub](https://github.com/Only-A7med) |
+| 5 | Dr. Zenab Elgamal | School of Computing, Skyline University College, Sharjah, UAE | [IEEE Xplore](https://ieeexplore.ieee.org/author/37088536515) |
 
 ## Architecture
 
