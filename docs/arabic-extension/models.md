@@ -8,6 +8,9 @@ The recommendation is in [datasets.md section 13.6](datasets.md#136-primary-embe
 this document is the evidence behind it, plus the Hugging Face Space limits the deployment has to
 fit.
 
+In these documents, "plan item N" refers to item N of the project plan, not to a GitHub
+pull request number.
+
 **Headline finding.** On technical merit the ranking is clear: MARBERTv2 is pretrained on a billion
 Arabic tweets and is the obvious best fit for tweet classification. On licence it is the opposite
 way round: **CAMeLBERT is the only candidate with an unambiguous licence, and MARBERT's repository
@@ -79,10 +82,13 @@ and n-gram construction, which would add an untested preprocessing dependency be
 normalisation and theirs. CBOW over SkipGram is a weak preference and a fair ablation if the
 embedding coverage turns out poor.
 
-**Risks.** The licence is unconfirmed, which is a section 8 stop. A single uncommon host. The
-vectors load through gensim, which is **not currently a project dependency** — pull request 7 would
+**Risks.** The licence is unconfirmed, which is a section 8 stop — **and it reaches further than
+downloading the vectors**, because a trained Bi-LSTM file contains them: see the correction in
+section 1.2 and the decision in
+[datasets.md section 13.10](datasets.md#1310-decisions-21-november-2026). A single uncommon host. The
+vectors load through gensim, which is **not currently a project dependency** — plan item 7 would
 add it, or convert the vectors once to a plain text format and keep gensim out of the runtime
-requirements, which is the better option for the deployed image. Pull request 7 must report the
+requirements, which is the better option for the deployed image. Plan item 7 must report the
 measured share of our Arabic vocabulary found in AraVec, as the English pipeline reports GloVe
 coverage (25,365 of 50,000 tokens, paper protocol).
 
@@ -104,9 +110,25 @@ than word-level vectors. Three costs. It is 300-dimensional, so the Arabic Bi-LS
 mirror the paper's 100-dimensional embedding — report that as a deliberate, stated deviation
 rather than truncating the vectors. It is Common Crawl and Wikipedia, not Twitter, so it is weaker
 on dialect and tweet register. And CC BY-SA 3.0 is a share-alike licence: it governs the vectors
-and any adapted copy of them, which is a reason not to redistribute a derived vector file in the
-model repository. Trained Bi-LSTM weights are a different artifact, but the cautious route is
-simply never to publish a modified copy of the vectors.
+and any adapted copy of them.
+
+**Correction, 21 November 2026 — trained Bi-LSTM weights are not a separate artifact from the
+vectors.** An earlier version of this section said they were, and that the cautious route was
+simply never to publish a modified copy of the vectors. That was wrong. `src/models/bilstm.py`
+builds the embedding matrix from the pretrained vectors and passes it to `layers.Embedding(…,
+trainable=False)`, so the matrix is a weight tensor inside the model and is saved into the
+`.keras` file. Measured on the already-published English artifact
+`safe/bilstm.keras`: the `Embedding` layer holds a `(50000, 100)` float32 matrix —
+20,000,000 bytes — of which 25,209 rows are non-zero, and because the layer is frozen those rows
+are **verbatim copies of the pretrained vectors**, not values learned from them. (25,209 matches
+the GloVe coverage the English model card reports for this protocol.)
+
+So **publishing an Arabic Bi-LSTM built on fastText would redistribute a subset of the fastText
+vectors inside the weights file**, and CC BY-SA 3.0 attribution and share-alike terms would apply
+to that file. The same reasoning applies to AraVec, whose licence is unconfirmed; the decision
+taken on it is recorded in [datasets.md section 13.10](datasets.md#1310-decisions-21-november-2026).
+This was never an issue for English because GloVe is released under the Open Data Commons Public
+Domain Dedication and License, which places no condition on redistribution.
 
 A second fallback, if a 100-dimensional Arabic vector set is wanted with a clear licence, is
 training word2vec on our own Arabic corpus — honest, reproducible, and far weaker than either
@@ -203,7 +225,7 @@ MARBERTv2 under its research-only terms is a defensible choice for an academic f
 it simply has to be decided, recorded, and reflected in where the weights are published.
 
 A fifth option worth one line: fine-tuning nothing and using the Bi-LSTM alone. That is already
-the plan for pull request 7; the transformer is the *improvement* the extension promises, so
+the plan for plan item 7; the transformer is the *improvement* the extension promises, so
 skipping it is not on the table.
 
 ---
@@ -241,13 +263,13 @@ load the model once at start-up rather than per request; consider dynamic int8 q
 would roughly quarter both the memory and the time at some cost in accuracy and would have to be
 measured as its own variant rather than swapped in silently.
 
-**A deployment risk that affects pull request 12 and is worth flagging now.** The Spaces overview
+**A deployment risk that affects plan item 12 and is worth flagging now.** The Spaces overview
 states: "Static Spaces are free for everyone. Gradio and Docker Spaces run on compute and require
 a paid plan to create: PRO for personal accounts, Team or Enterprise for organizations. Free
 personal accounts in good standing can still host up to 2 Gradio Spaces running on ZeroGPU." The
 repository's plan is a **Docker** Space. On that wording, creating it needs a PRO account, free
 CPU Basic hardware notwithstanding. No Space has been created yet, so nothing is broken today, but
-pull request 12 should not assume a free Docker Space is available. The options are a paid PRO
+plan item 12 should not assume a free Docker Space is available. The options are a paid PRO
 account, a Gradio Space on the free ZeroGPU allowance instead of Docker, or no public demonstration
 at all — which is the README's current, accurate position.
 
@@ -256,7 +278,7 @@ at all — which is the README's current, accurate position.
 ## 4. Preprocessing: the transformer does not get our normalisation
 
 Section 4 of the brief is explicit, and it matters enough to restate. The Arabic normalisation
-written in pull request 4 — unifying alef forms, alef maqsura, taa marbuta, stripping tashkeel and
+written in plan item 4 — unifying alef forms, alef maqsura, taa marbuta, stripping tashkeel and
 tatweel, collapsing repeated letters — is for the TF-IDF baseline and the Bi-LSTM. A pretrained
 transformer expects the preprocessing it was pretrained with, and aggressive normalisation it never
 saw can only lose information its tokeniser was built to use.
@@ -281,12 +303,14 @@ labelled ablation** with both arms reported, never as an unstated default.
 ## 5. Open licence questions for the maintainer
 
 Collected from this document; the dataset equivalents are in
-[datasets.md section 14](datasets.md#14-limitations).
+[datasets.md section 14](datasets.md#14-limitations). **The maintainer's answers of 21 November 2026
+are recorded in [datasets.md section 13.10](datasets.md#1310-decisions-21-november-2026)**; the
+"Decision" column below gives them in one line each.
 
-| Resource | Status | Decision needed |
+| Resource | Status | Decision |
 |---|---|---|
-| AraVec 3.0 | No licence; "free to use" in prose only | Accept, or fall back to fastText CC BY-SA 3.0 at 300 dimensions |
-| MARBERT / MARBERTv2 | No licence, plus "exclusively for research" | Only if explicitly accepted, with the Arabic weights then published separately under that restriction |
-| AraBERT, Twitter variant | No licence at all; private pretraining corpora | Not recommended |
-| CAMeLBERT | `apache-2.0` card, MIT code repository | **No decision needed — this is why it is recommended** |
-| fastText `cc.ar.300` | CC BY-SA 3.0, explicit | Usable; do not redistribute a modified copy of the vectors |
+| AraVec 3.0 | No licence; "free to use" in prose only | **Accepted for training.** The Arabic Bi-LSTM weights stay unpublished until the licence is confirmed, because the weights file contains the vectors |
+| MARBERT / MARBERTv2 | No licence, plus "exclusively for research" | **Research-only comparison.** Metrics reported, weights never published |
+| AraBERT, Twitter variant | No licence at all; private pretraining corpora | Not used |
+| CAMeLBERT | `apache-2.0` card, MIT code repository | **Primary and published model** — `-mix` primary, `-da` a labelled ablation |
+| fastText `cc.ar.300` | CC BY-SA 3.0, explicit | Fallback only. If used, the published Bi-LSTM weights would carry CC BY-SA 3.0 attribution and share-alike terms for the vectors inside them |

@@ -4,8 +4,13 @@ This document surveys the Arabic datasets that could support a fake-tweet detect
 existing English pipeline, and recommends one. Embeddings and pretrained transformers are surveyed
 separately in [models.md](models.md).
 
-**Status: decision gate.** No pipeline code and no dataset download belongs to this document. The
-primary dataset is chosen by the maintainer on the strength of what is recorded here.
+**Status: the gate has been decided.** No pipeline code and no dataset download belongs to this
+document. The survey below is what the decision was taken on; **the decisions themselves are in
+[section 13.10](#1310-decisions-21-november-2026), and where they differ from or add to the
+recommendation in section 13, section 13.10 governs.**
+
+In these documents, "plan item N" refers to item N of the project plan, not to a GitHub
+pull request number.
 
 **Everything below was read from a primary source on 21 November 2026.** Each entry links the page
 that was read. Where a file-level claim is made — "the text is distributed", "the labels are these
@@ -419,7 +424,7 @@ cite.
    the corresponding author.
 2. **It is small.** 3,584 labelled tweets against the English pipeline's 200,000 augmented rows —
    a factor of roughly 56. Every Arabic number will carry a wide confidence interval, which is why
-   pull request 9 already mandates at least three seeds with mean and standard deviation. Arabic
+   plan item 9 already mandates at least three seeds with mean and standard deviation. Arabic
    and English results must never be presented as directly comparable.
 3. **Narrow domain and period.** COVID-19 and claims it influenced, between January and April 2020.
    Nothing can be said about Arabic tweets on other topics or in other years.
@@ -484,7 +489,7 @@ requires. The design, in order:
    augmentation is a paper-fidelity device, not an improvement; for Arabic it is optional and
    should be justified by a measurement rather than copied.
 7. **A validation split carved from the training side only**, for the transformer's early
-   stopping (pull request 8). Also grouped, so no claim spans training and validation.
+   stopping (plan item 8). Also grouped, so no claim spans training and validation.
 
 **Why five folds rather than one split.** With 138 groups and a maximum group of 202 tweets, a
 single 20 per cent test set is one roll of the dice: one large claim landing in test can move
@@ -508,9 +513,9 @@ From the measured figures, before any augmentation:
 | Single 80/20 grouped split, approximately | 2,544 training, 636 test |
 
 The classes are **near-balanced**, so accuracy is not misleading here in the way it would be on a
-skewed set. Macro F1 should still be reported, per pull request 9, because fold-level balance will
+skewed set. Macro F1 should still be reported, per plan item 9, because fold-level balance will
 drift once whole claims move together. The exact post-cleaning counts and the realised fold balance
-are to be measured and committed in pull request 5, not predicted here.
+are to be measured and committed in plan item 5, not predicted here.
 
 ### 13.6 Primary embedding and transformer
 
@@ -559,7 +564,7 @@ The Docker image stays weight-free; the start-up download gains the Arabic paths
 
 Following section 4 of the brief. English modules do not move, and no English file is edited except
 `src/config.py`, which gains a new section at the end, and the application, which gains routing in
-pull request 10.
+plan item 10.
 
 ```
 src/
@@ -571,42 +576,42 @@ src/
     split.py                   unchanged (English)
     arabic/
       __init__.py
-      normalise.py             NEW  pull request 4: alef/alef-maqsura/taa-marbuta, tashkeel,
+      normalise.py             NEW  plan item 4: alef/alef-maqsura/taa-marbuta, tashkeel,
                                     tatweel, repeated letters, hashtags, mentions, uniform
                                     resource locators, emojis, Arabic-Indic digits, mixed script
-      download.py              NEW  pull request 5: fetch ArCOV19-Rumors, cache outside the repository
-      prepare.py               NEW  pull request 5: join the claim identifier, clean, de-duplicate
-      split.py                 NEW  pull request 5: grouped, stratified, seeded; five folds
+      download.py              NEW  plan item 5: fetch ArCOV19-Rumors, cache outside the repository
+      prepare.py               NEW  plan item 5: join the claim identifier, clean, de-duplicate
+      split.py                 NEW  plan item 5: grouped, stratified, seeded; five folds
   models/
     baseline.py                unchanged (English)
     bilstm.py                  unchanged (English)
     predict.py                 unchanged (English)
     arabic/
       __init__.py
-      baseline.py              NEW  pull request 6: TF-IDF + Logistic Regression
-      bilstm.py                NEW  pull request 7: Bi-LSTM + AraVec
-      transformer.py           NEW  pull request 8: fine-tuned transformer
+      baseline.py              NEW  plan item 6: TF-IDF + Logistic Regression
+      bilstm.py                NEW  plan item 7: Bi-LSTM + AraVec
+      transformer.py           NEW  plan item 8: fine-tuned transformer
       predict.py               NEW  Arabic inference, mirroring models/predict.py
   training/
     train_baseline.py          unchanged (English)
     train_bilstm.py            unchanged (English)
-    evaluate.py                extended in pull request 9, per language; English output identical
+    evaluate.py                extended in plan item 9, per language; English output identical
     arabic/
       __init__.py
-      train_baseline.py        NEW  pull request 6
-      train_bilstm.py          NEW  pull request 7
-      train_transformer.py     NEW  pull request 8
+      train_baseline.py        NEW  plan item 6
+      train_bilstm.py          NEW  plan item 7
+      train_transformer.py     NEW  plan item 8
   app/
-    app.py                     extended in pull requests 10 and 11; existing fields preserved
-    download_artifacts.py      extended in pull request 12 to fetch arabic/
+    app.py                     extended in plan items 10 and 11; existing fields preserved
+    download_artifacts.py      extended in plan item 12 to fetch arabic/
 
 docs/arabic-extension/         this survey
-notebooks/arabic_eda.ipynb     NEW  pull request 5
+notebooks/arabic_eda.ipynb     NEW  plan item 5
 reports/
-  metrics/arabic.json          NEW  pull request 6 onward
-  arabic_error_analysis.md     NEW  pull request 9
-  arabic_extension.md          NEW  pull request 13
-scripts/check_arabic_coverage.py   NEW  pull request 4; see below
+  metrics/arabic.json          NEW  plan item 6 onward
+  arabic_error_analysis.md     NEW  plan item 9
+  arabic_extension.md          NEW  plan item 13
+scripts/check_arabic_coverage.py   NEW  plan item 4; see below
 tests/
   arabic/                      NEW  tests mirroring each module above
 ```
@@ -630,7 +635,7 @@ naming the source where one exists.
 
 Section 6 of the brief: the total floor stays 87 per cent, and **every new Arabic module reaches at
 least 90 per cent line coverage on its own.** `pytest-cov`'s `--cov-fail-under` is a single total
-and cannot express that, so pull request 4 adds a second, independent gate.
+and cannot express that, so plan item 4 adds a second, independent gate.
 
 Mechanism:
 
@@ -652,6 +657,74 @@ coverage of the run it is part of has to reason about its own measurement, which
 A post-processing step on the finished report is deterministic and its failure message can name
 every offending file and percentage at once.
 
+### 13.10 Decisions, 21 November 2026
+
+The maintainer's answers to the gate. Where a decision differs from, or adds to, the
+recommendation above, this section is what governs.
+
+**Dataset — ArCOV19-Rumors, tweet-verification subset. Accepted.** Accepted **with its licence
+unconfirmed**, on the same terms the project already applies to TruthSeeker 2023: the dataset is
+cited, cached outside the repository, and never redistributed — nothing of it is committed, and no
+copy of it is published. An explicit licence is being requested from the authors; if one arrives it
+is recorded in this section. AFND remains the documented backup (section 13.2) and is not needed
+unless that request changes the position.
+
+**Label mapping and split — as recommended.** Section 13.3 stands: `True` → real (1), `False` →
+fake (0), `Other` dropped. Section 13.4 stands in full, including its headline design:
+**five-fold claim-grouped cross-validation as the reported result, plus one fixed grouped split,
+which is the split any published weights are trained on.**
+
+**Embedding — AraVec `full_uni_cbow_100_twitter`. Accepted for training, licence unconfirmed.**
+With one consequence the survey missed and which is recorded here because it changes what may be
+published:
+
+> **A trained Bi-LSTM file contains the embedding matrix.** `src/models/bilstm.py` passes the
+> pretrained vectors into `layers.Embedding(…, trainable=False)`, so the matrix is a weight tensor
+> saved inside the `.keras` artifact, and because the layer is frozen its populated rows are
+> verbatim copies of the pretrained vectors rather than values learned from them. Measured on the
+> already-published English artifact `safe/bilstm.keras`: a `(50000, 100)` float32 matrix,
+> 20,000,000 bytes, with 25,209 non-zero rows — matching the GloVe coverage its model card
+> reports. **Publishing the Arabic Bi-LSTM weights would therefore redistribute a subset of the
+> AraVec vectors.**
+
+Accordingly: **the Arabic Bi-LSTM weights stay unpublished while AraVec's licence is unconfirmed.**
+The model is still trained and its metrics are still reported — training and evaluating locally
+redistributes nothing. Whether the weights can be published is decided at **plan item 12**, by
+which time the AraVec licence request may have been answered. This was never a question for
+English because GloVe is released under the Open Data Commons Public Domain Dedication and
+License, which places no condition on redistribution. The parallel point for the fastText
+fallback — that its CC BY-SA 3.0 attribution and share-alike terms would reach inside published
+Bi-LSTM weights — is corrected in [models.md section 1.2](models.md#12-fasttext-arabic--fallback-with-a-clear-licence).
+
+**Transformer — CAMeLBERT, with MARBERTv2 as a comparison.**
+
+| Model | Role | Weights published? |
+|---|---|---|
+| `CAMeL-Lab/bert-base-arabic-camelbert-mix` | **primary model** | **yes** |
+| `CAMeL-Lab/bert-base-arabic-camelbert-da` | clearly labelled ablation | yes |
+| `UBC-NLP/MARBERTv2` | research-only comparison; metrics reported | **never** |
+
+MARBERTv2 is included so the write-up can say what the strongest tweet-pretrained Arabic model
+achieves on this data, rather than leaving it as an untested assertion. Its repository restricts
+its checkpoints to use "exclusively for research", so its **metrics are reported and its weights
+are never published** — not to the model repository, not to a Space, not anywhere. Any table
+carrying its numbers must say so next to them.
+
+**Arabic weights — `arabic/` in
+[`Only-A7med/fake-tweets-detection`](https://huggingface.co/Only-A7med/fake-tweets-detection).**
+As proposed in section 13.7. What goes there, given the decisions above: the **TF-IDF + Logistic
+Regression baseline** and the **CAMeLBERT models**. Not the Bi-LSTM, pending the AraVec licence.
+Not MARBERTv2, ever. The repository stays MIT and the English artifacts are untouched. The layout
+sketch in section 13.7 therefore applies minus `bilstm.keras` and `bilstm_history.json` until plan
+item 12 revisits it.
+
+**Hugging Face Space — the free Docker Space assumption is withdrawn.** Section 3 of
+[models.md](models.md#3-fitting-the-free-hugging-face-space) records that the Hub documentation now
+states Gradio and Docker Spaces require a paid plan to create. The project no longer assumes a free
+Docker Space is available, and **hosting is decided at plan item 12** — paid plan, a Gradio Space
+on the free allowance, or no public demonstration. The README's current position, that there is no
+public demonstration, stays accurate in the meantime.
+
 ---
 
 ## 14. Limitations
@@ -664,7 +737,7 @@ from 134,198 cleaned tweets. Arabic results will have materially wider uncertain
 be placed in the same table as the English numbers without a column making the difference
 explicit.** A one or two point difference between two Arabic models on a 636-tweet fold is likely
 to be noise; hence at least three seeds, five-fold grouped cross-validation, mean and standard
-deviation, and the paired significance test pull request 9 already requires.
+deviation, and the paired significance test plan item 9 already requires.
 
 **Domain and period.** ArCOV19-Rumors is COVID-19-era claims from January to April 2020. The
 English TruthSeeker data is also narrow, but differently narrow. Neither model's accuracy
@@ -674,8 +747,8 @@ pandemic's information environment.
 **Dialect coverage is not documented, and we should not guess it.** The dataset's topical
 categories are published; its dialect composition is not. Arabic tweets about a global news event
 mix Modern Standard Arabic with Gulf, Egyptian, Levantine and Maghrebi varieties in unknown
-proportion. Pull request 5's exploratory data analysis should measure dialect signals rather than
-assume them, and pull request 9's error analysis groups errors by dialect against Modern Standard
+proportion. Plan item 5's exploratory data analysis should measure dialect signals rather than
+assume them, and plan item 9's error analysis groups errors by dialect against Modern Standard
 Arabic — those will be the first real evidence. Nothing in this survey supports a claim about
 dialect balance.
 
@@ -712,7 +785,7 @@ Arabic file format, because gitlab.com rate-limited every request; the ArCOV19-R
 project licence metadata field, for the same reason; and 91 of the 138 ArCOV19-Rumors per-claim
 files, so the claim mapping and the finding about the published folds rest on a 47-file sample
 rather than the whole set. The 47-file evidence is consistent and one-directional, but it is a
-sample, and pull request 5 will have the complete join.
+sample, and plan item 5 will have the complete join.
 
 **No measurement in this document is a result.** Nothing here was trained or evaluated. The counts
 above are properties of files published by other people, parsed to check the authors' own
