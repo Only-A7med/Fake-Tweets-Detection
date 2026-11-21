@@ -29,7 +29,8 @@ paper's primary BiLSTM + GloVe model, served side by side from a small Flask app
 ## Research Team
 
 Authors of the ICCIKE 2025 paper, in published order.
-Affiliations use each institution's current official name.
+Affiliations are as confirmed by author 4, who maintains this repository. Where an author has
+since moved, the current institution is shown on a second line.
 
 | # | Author | Affiliation | Profile |
 |---|---|---|---|
