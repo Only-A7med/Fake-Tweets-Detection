@@ -132,6 +132,31 @@ per-epoch curves, test accuracy, and artifacts. Inspect them with `mlflow ui`. L
 varied to sanity-check the paper's architecture choices (see `--lstm-units` /
 `--dense-units` / `--no-save` on `train_bilstm`).
 
+### Provenance of the published results
+
+The results table above was first measured in an earlier training round **whose MLflow store was
+not preserved**, so those numbers carried no run identifiers. All four models were therefore
+retrained from scratch with the same code, the same `src/config.py` and seed 42, and the retrained
+metrics reproduced the committed figures **exactly** — every one of the 24 fields in
+`reports/metrics.json`, at full floating-point precision, and the six figures in
+`reports/figures/` byte for byte. The table is unchanged; it now has traceable provenance:
+
+| Protocol | Model | MLflow run | Training time |
+|---|---|---|---|
+| paper | TF-IDF + LogReg | `204879f821a54d9085c7e8e0f0103cf1` | 32.1 s |
+| paper | BiLSTM + GloVe | `3ffff24580444d2ba6bcfb64269edb65` | 19.5 min |
+| leakage-safe | TF-IDF + LogReg | `22ac0f6d2ab04f259b2c45e3b66d54db` | 34.6 s |
+| leakage-safe | BiLSTM + GloVe | `5bc1da65ad18400d804c6f122a575af1` | 18.6 min |
+
+Measured on an Intel Core i5-13500H (12 cores / 16 threads), 15.6 GB RAM, **CPU only**, Python
+3.11.9 with TensorFlow 2.21.0, Keras 3.15.1, NumPy 2.4.6 and scikit-learn 1.9.0. The MLflow store
+is local and not committed.
+
+Those exact artifacts are published in the private model repository
+[`Only-A7med/fake-tweets-detection`](https://huggingface.co/Only-A7med/fake-tweets-detection) at
+revision `5624bbdaafe313bfc14c6d00d50a6ef274c03357`; its model card repeats these numbers next to
+the data and embedding licences. They are the first weights ever published for this project.
+
 ## Deployment (tooling only — no public demo yet)
 
 **There is no public demo.** No Hugging Face Space has been created, so nothing is deployed and
