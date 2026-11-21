@@ -1,0 +1,515 @@
+{
+  "model_repo": "Only-A7med/fake-tweets-detection",
+  "revision": "5624bbdaafe313bfc14c6d00d50a6ef274c03357",
+  "note": "Golden predictions for the English pipeline. Labels must match exactly; probabilities to 1e-6. Regenerate only when the pinned revision changes.",
+  "inputs": {
+    "true_rates": "The Federal Reserve raised interest rates by 25 basis points on Wednesday.",
+    "true_inflation": "Inflation fell to 3.1% in October, according to official statistics.",
+    "true_guidance": "The World Health Organization published new guidance on seasonal influenza vaccines.",
+    "true_council": "The local council approved a budget for road repairs starting next month.",
+    "true_study": "A study of 40,000 adults found that regular exercise lowers the risk of heart disease.",
+    "true_election": "Officials said turnout in the regional election was the highest in twelve years.",
+    "fake_bleach": "BREAKING: scientists discover that drinking bleach cures every known disease overnight.",
+    "fake_moon": "Government finally admits the moon landing was filmed in a basement in Nevada.",
+    "fake_5g": "Doctors confirm 5G towers implant microchips through ordinary tap water.",
+    "fake_lemon": "One lemon a day replaces every vaccine, an anonymous insider has revealed.",
+    "fake_double": "A celebrity was secretly replaced by a body double in 1997, the family confirms.",
+    "fake_banks": "All banks will seize every savings account at midnight, leaked memo shows.",
+    "edge_empty": "",
+    "edge_whitespace": "   ",
+    "edge_url_only": "https://example.com/news/article/12345",
+    "edge_mention_hashtag": "@newsdesk check this out #BreakingNews #Update",
+    "edge_emoji_only": "🔥🔥🔥 😂 🙈",
+    "edge_all_caps": "THIS IS COMPLETELY TRUE AND YOU MUST SHARE IT WITH EVERYONE RIGHT NOW",
+    "edge_punctuation_only": "!!! ??? ... ,,, ---",
+    "edge_single_word": "Breaking",
+    "edge_digits": "42",
+    "edge_very_long": "A report circulating online claims that every major news organisation agreed in secret to publish the same headline on the same morning, and that the agreement was signed at a hotel whose name nobody can remember, by people whose names nobody will confirm, in a country that the report does not identify, during a month that the report does not give, for reasons the report says will become obvious to anyone who reads between the lines of any front page printed since then."
+  },
+  "predictions": {
+    "true_rates": {
+      "paper/baseline": {
+        "label": "real",
+        "confidence": 0.9726757699343842,
+        "p_real": 0.9726757699343842
+      },
+      "paper/bilstm": {
+        "label": "real",
+        "confidence": 0.9999842047691345,
+        "p_real": 0.9999842047691345
+      },
+      "safe/baseline": {
+        "label": "real",
+        "confidence": 0.9761606044778552,
+        "p_real": 0.9761606044778552
+      },
+      "safe/bilstm": {
+        "label": "real",
+        "confidence": 0.9999929070472717,
+        "p_real": 0.9999929070472717
+      }
+    },
+    "true_inflation": {
+      "paper/baseline": {
+        "label": "real",
+        "confidence": 0.9418089922082403,
+        "p_real": 0.9418089922082403
+      },
+      "paper/bilstm": {
+        "label": "real",
+        "confidence": 0.9988012313842773,
+        "p_real": 0.9988012313842773
+      },
+      "safe/baseline": {
+        "label": "real",
+        "confidence": 0.9399931648573975,
+        "p_real": 0.9399931648573975
+      },
+      "safe/bilstm": {
+        "label": "real",
+        "confidence": 0.999998152256012,
+        "p_real": 0.999998152256012
+      }
+    },
+    "true_guidance": {
+      "paper/baseline": {
+        "label": "fake",
+        "confidence": 0.8921552905079012,
+        "p_real": 0.10784470949209875
+      },
+      "paper/bilstm": {
+        "label": "fake",
+        "confidence": 0.9997779663244728,
+        "p_real": 0.0002220336755272001
+      },
+      "safe/baseline": {
+        "label": "fake",
+        "confidence": 0.9052313025431529,
+        "p_real": 0.09476869745684716
+      },
+      "safe/bilstm": {
+        "label": "fake",
+        "confidence": 0.9997468880319502,
+        "p_real": 0.00025311196804977953
+      }
+    },
+    "true_council": {
+      "paper/baseline": {
+        "label": "fake",
+        "confidence": 0.7888076713411579,
+        "p_real": 0.21119232865884208
+      },
+      "paper/bilstm": {
+        "label": "real",
+        "confidence": 0.995945930480957,
+        "p_real": 0.995945930480957
+      },
+      "safe/baseline": {
+        "label": "fake",
+        "confidence": 0.8038766472949775,
+        "p_real": 0.19612335270502249
+      },
+      "safe/bilstm": {
+        "label": "real",
+        "confidence": 0.999099612236023,
+        "p_real": 0.999099612236023
+      }
+    },
+    "true_study": {
+      "paper/baseline": {
+        "label": "real",
+        "confidence": 0.5260613547319496,
+        "p_real": 0.5260613547319496
+      },
+      "paper/bilstm": {
+        "label": "fake",
+        "confidence": 0.9999426900067192,
+        "p_real": 5.7309993280796334e-05
+      },
+      "safe/baseline": {
+        "label": "real",
+        "confidence": 0.6059121112600049,
+        "p_real": 0.6059121112600049
+      },
+      "safe/bilstm": {
+        "label": "fake",
+        "confidence": 0.9999990406947745,
+        "p_real": 9.593052254786016e-07
+      }
+    },
+    "true_election": {
+      "paper/baseline": {
+        "label": "real",
+        "confidence": 0.9824542219883278,
+        "p_real": 0.9824542219883278
+      },
+      "paper/bilstm": {
+        "label": "real",
+        "confidence": 0.999931275844574,
+        "p_real": 0.999931275844574
+      },
+      "safe/baseline": {
+        "label": "real",
+        "confidence": 0.9874644889587915,
+        "p_real": 0.9874644889587915
+      },
+      "safe/bilstm": {
+        "label": "real",
+        "confidence": 1.0,
+        "p_real": 1.0
+      }
+    },
+    "fake_bleach": {
+      "paper/baseline": {
+        "label": "fake",
+        "confidence": 0.7235183158781884,
+        "p_real": 0.2764816841218117
+      },
+      "paper/bilstm": {
+        "label": "fake",
+        "confidence": 0.9999995207717234,
+        "p_real": 4.792282766175049e-07
+      },
+      "safe/baseline": {
+        "label": "fake",
+        "confidence": 0.6769937415628643,
+        "p_real": 0.3230062584371357
+      },
+      "safe/bilstm": {
+        "label": "fake",
+        "confidence": 0.918414793908596,
+        "p_real": 0.08158520609140396
+      }
+    },
+    "fake_moon": {
+      "paper/baseline": {
+        "label": "fake",
+        "confidence": 0.9514155726259762,
+        "p_real": 0.04858442737402381
+      },
+      "paper/bilstm": {
+        "label": "fake",
+        "confidence": 0.9999999944882831,
+        "p_real": 5.511716860695515e-09
+      },
+      "safe/baseline": {
+        "label": "fake",
+        "confidence": 0.9460399204827404,
+        "p_real": 0.053960079517259535
+      },
+      "safe/bilstm": {
+        "label": "fake",
+        "confidence": 0.9999999411437912,
+        "p_real": 5.885620879553244e-08
+      }
+    },
+    "fake_5g": {
+      "paper/baseline": {
+        "label": "real",
+        "confidence": 0.5385402282883811,
+        "p_real": 0.5385402282883811
+      },
+      "paper/bilstm": {
+        "label": "fake",
+        "confidence": 0.9998796522049815,
+        "p_real": 0.0001203477950184606
+      },
+      "safe/baseline": {
+        "label": "real",
+        "confidence": 0.5860288317199577,
+        "p_real": 0.5860288317199577
+      },
+      "safe/bilstm": {
+        "label": "fake",
+        "confidence": 0.8463484942913055,
+        "p_real": 0.15365150570869446
+      }
+    },
+    "fake_lemon": {
+      "paper/baseline": {
+        "label": "fake",
+        "confidence": 0.9608399958734372,
+        "p_real": 0.039160004126562835
+      },
+      "paper/bilstm": {
+        "label": "fake",
+        "confidence": 0.9999998192568711,
+        "p_real": 1.8074312890803412e-07
+      },
+      "safe/baseline": {
+        "label": "fake",
+        "confidence": 0.9584334982569199,
+        "p_real": 0.041566501743080034
+      },
+      "safe/bilstm": {
+        "label": "fake",
+        "confidence": 0.9163094088435173,
+        "p_real": 0.0836905911564827
+      }
+    },
+    "fake_double": {
+      "paper/baseline": {
+        "label": "real",
+        "confidence": 0.8281731474842502,
+        "p_real": 0.8281731474842502
+      },
+      "paper/bilstm": {
+        "label": "fake",
+        "confidence": 0.8847919926047325,
+        "p_real": 0.11520800739526749
+      },
+      "safe/baseline": {
+        "label": "real",
+        "confidence": 0.8330403759022137,
+        "p_real": 0.8330403759022137
+      },
+      "safe/bilstm": {
+        "label": "real",
+        "confidence": 0.9930904507637024,
+        "p_real": 0.9930904507637024
+      }
+    },
+    "fake_banks": {
+      "paper/baseline": {
+        "label": "fake",
+        "confidence": 0.7991645593212737,
+        "p_real": 0.20083544067872627
+      },
+      "paper/bilstm": {
+        "label": "fake",
+        "confidence": 0.7805709838867188,
+        "p_real": 0.21942901611328125
+      },
+      "safe/baseline": {
+        "label": "fake",
+        "confidence": 0.7631046691835793,
+        "p_real": 0.23689533081642067
+      },
+      "safe/bilstm": {
+        "label": "fake",
+        "confidence": 0.9979498889297247,
+        "p_real": 0.0020501110702753067
+      }
+    },
+    "edge_empty": {
+      "paper/baseline": {
+        "label": "real",
+        "confidence": 0.654209869238271,
+        "p_real": 0.654209869238271
+      },
+      "paper/bilstm": {
+        "label": "real",
+        "confidence": 0.9462809562683105,
+        "p_real": 0.9462809562683105
+      },
+      "safe/baseline": {
+        "label": "real",
+        "confidence": 0.6573223259994991,
+        "p_real": 0.6573223259994991
+      },
+      "safe/bilstm": {
+        "label": "real",
+        "confidence": 0.9867060780525208,
+        "p_real": 0.9867060780525208
+      }
+    },
+    "edge_whitespace": {
+      "paper/baseline": {
+        "label": "real",
+        "confidence": 0.654209869238271,
+        "p_real": 0.654209869238271
+      },
+      "paper/bilstm": {
+        "label": "real",
+        "confidence": 0.9462809562683105,
+        "p_real": 0.9462809562683105
+      },
+      "safe/baseline": {
+        "label": "real",
+        "confidence": 0.6573223259994991,
+        "p_real": 0.6573223259994991
+      },
+      "safe/bilstm": {
+        "label": "real",
+        "confidence": 0.9867060780525208,
+        "p_real": 0.9867060780525208
+      }
+    },
+    "edge_url_only": {
+      "paper/baseline": {
+        "label": "real",
+        "confidence": 0.6093344732489908,
+        "p_real": 0.6093344732489908
+      },
+      "paper/bilstm": {
+        "label": "real",
+        "confidence": 0.9462809562683105,
+        "p_real": 0.9462809562683105
+      },
+      "safe/baseline": {
+        "label": "real",
+        "confidence": 0.5077134508349382,
+        "p_real": 0.5077134508349382
+      },
+      "safe/bilstm": {
+        "label": "real",
+        "confidence": 0.9867060780525208,
+        "p_real": 0.9867060780525208
+      }
+    },
+    "edge_mention_hashtag": {
+      "paper/baseline": {
+        "label": "real",
+        "confidence": 0.5191267471537373,
+        "p_real": 0.5191267471537373
+      },
+      "paper/bilstm": {
+        "label": "real",
+        "confidence": 0.841961681842804,
+        "p_real": 0.841961681842804
+      },
+      "safe/baseline": {
+        "label": "real",
+        "confidence": 0.6032175644168577,
+        "p_real": 0.6032175644168577
+      },
+      "safe/bilstm": {
+        "label": "real",
+        "confidence": 0.999292254447937,
+        "p_real": 0.999292254447937
+      }
+    },
+    "edge_emoji_only": {
+      "paper/baseline": {
+        "label": "real",
+        "confidence": 0.654209869238271,
+        "p_real": 0.654209869238271
+      },
+      "paper/bilstm": {
+        "label": "real",
+        "confidence": 0.9462809562683105,
+        "p_real": 0.9462809562683105
+      },
+      "safe/baseline": {
+        "label": "real",
+        "confidence": 0.6573223259994991,
+        "p_real": 0.6573223259994991
+      },
+      "safe/bilstm": {
+        "label": "real",
+        "confidence": 0.9867060780525208,
+        "p_real": 0.9867060780525208
+      }
+    },
+    "edge_all_caps": {
+      "paper/baseline": {
+        "label": "fake",
+        "confidence": 0.5947874668271123,
+        "p_real": 0.4052125331728878
+      },
+      "paper/bilstm": {
+        "label": "fake",
+        "confidence": 0.8560210764408112,
+        "p_real": 0.14397892355918884
+      },
+      "safe/baseline": {
+        "label": "fake",
+        "confidence": 0.7037153877241344,
+        "p_real": 0.2962846122758655
+      },
+      "safe/bilstm": {
+        "label": "fake",
+        "confidence": 0.6383192241191864,
+        "p_real": 0.3616807758808136
+      }
+    },
+    "edge_punctuation_only": {
+      "paper/baseline": {
+        "label": "real",
+        "confidence": 0.654209869238271,
+        "p_real": 0.654209869238271
+      },
+      "paper/bilstm": {
+        "label": "real",
+        "confidence": 0.9462809562683105,
+        "p_real": 0.9462809562683105
+      },
+      "safe/baseline": {
+        "label": "real",
+        "confidence": 0.6573223259994991,
+        "p_real": 0.6573223259994991
+      },
+      "safe/bilstm": {
+        "label": "real",
+        "confidence": 0.9867060780525208,
+        "p_real": 0.9867060780525208
+      }
+    },
+    "edge_single_word": {
+      "paper/baseline": {
+        "label": "fake",
+        "confidence": 0.5164979121959745,
+        "p_real": 0.4835020878040254
+      },
+      "paper/bilstm": {
+        "label": "real",
+        "confidence": 0.9640443921089172,
+        "p_real": 0.9640443921089172
+      },
+      "safe/baseline": {
+        "label": "fake",
+        "confidence": 0.5690829992785487,
+        "p_real": 0.43091700072145134
+      },
+      "safe/bilstm": {
+        "label": "real",
+        "confidence": 0.9348234534263611,
+        "p_real": 0.9348234534263611
+      }
+    },
+    "edge_digits": {
+      "paper/baseline": {
+        "label": "real",
+        "confidence": 0.6521441045161891,
+        "p_real": 0.6521441045161891
+      },
+      "paper/bilstm": {
+        "label": "real",
+        "confidence": 0.9817561507225037,
+        "p_real": 0.9817561507225037
+      },
+      "safe/baseline": {
+        "label": "real",
+        "confidence": 0.6590562646318141,
+        "p_real": 0.6590562646318141
+      },
+      "safe/bilstm": {
+        "label": "real",
+        "confidence": 0.9995250105857849,
+        "p_real": 0.9995250105857849
+      }
+    },
+    "edge_very_long": {
+      "paper/baseline": {
+        "label": "fake",
+        "confidence": 0.7327616134660584,
+        "p_real": 0.26723838653394166
+      },
+      "paper/bilstm": {
+        "label": "fake",
+        "confidence": 0.9942640527151525,
+        "p_real": 0.005735947284847498
+      },
+      "safe/baseline": {
+        "label": "fake",
+        "confidence": 0.6780740015718705,
+        "p_real": 0.3219259984281295
+      },
+      "safe/bilstm": {
+        "label": "fake",
+        "confidence": 0.9935860317200422,
+        "p_real": 0.006413968279957771
+      }
+    }
+  }
+}

@@ -5,6 +5,12 @@ on:
     branches: [main]
   pull_request:
 
+env:
+  # Revision of Only-A7med/fake-tweets-detection the English golden-output tests
+  # are pinned to. Must match MODEL_REVISION in tests/golden_support.py, which
+  # tests/test_english_regression.py asserts.
+  GOLDEN_REVISION: 5624bbdaafe313bfc14c6d00d50a6ef274c03357
+
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
@@ -20,10 +26,28 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
 
+      - name: Cache pinned model weights
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/tweetguard-golden
+          key: golden-weights-${{ env.GOLDEN_REVISION }}
+
       - name: Lint (ruff)
         run: |
           ruff check .
           ruff format --check .
 
+      # REQUIRE_GOLDEN=1 turns "weights unavailable" from a skip into a failure,
+      # so the English regression guard can never be silently skipped here.
       - name: Tests (pytest)
+        env:
+          REQUIRE_GOLDEN: "1"
         run: pytest -q --cov=src --cov-report=term-missing --cov-fail-under=87
+
+      # Re-runs the four golden comparisons with output shown, so the log keeps
+      # the measured Windows-to-Linux probability drift per model. The weights
+      # are cached by now, so this costs seconds.
+      - name: Report golden drift
+        env:
+          REQUIRE_GOLDEN: "1"
+        run: pytest tests/test_english_regression.py -k predictions_match -s -q

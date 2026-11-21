@@ -1,0 +1,50 @@
+{
+  "note": "Provenance of the English results. reports/metrics.json holds the measured values and stays the single source of truth; this file records where they came from. Both are frozen by the English regression guard in tests/test_english_regression.py.",
+  "metrics_file": "reports/metrics.json",
+  "measured_on": "2026-11-21",
+  "mlflow": {
+    "tracking_uri": "sqlite:///mlflow.db",
+    "experiment": "tweetguard",
+    "committed": false,
+    "runs": {
+      "paper/baseline": "204879f821a54d9085c7e8e0f0103cf1",
+      "paper/bilstm": "3ffff24580444d2ba6bcfb64269edb65",
+      "safe/baseline": "22ac0f6d2ab04f259b2c45e3b66d54db",
+      "safe/bilstm": "5bc1da65ad18400d804c6f122a575af1"
+    },
+    "train_seconds": {
+      "paper/baseline": 32.1,
+      "paper/bilstm": 1171.3,
+      "safe/baseline": 34.6,
+      "safe/bilstm": 1113.2
+    }
+  },
+  "artifacts": {
+    "model_repo": "Only-A7med/fake-tweets-detection",
+    "revision": "5624bbdaafe313bfc14c6d00d50a6ef274c03357",
+    "files": [
+      "paper/baseline.joblib",
+      "paper/bilstm.keras",
+      "paper/bilstm_history.json",
+      "safe/baseline.joblib",
+      "safe/bilstm.keras",
+      "safe/bilstm_history.json"
+    ]
+  },
+  "hardware": {
+    "cpu": "Intel Core i5-13500H (12 cores / 16 threads)",
+    "memory_gb": 15.6,
+    "gpu": null,
+    "os": "Windows 11 Pro 10.0.26300"
+  },
+  "libraries": {
+    "python": "3.11.9",
+    "tensorflow": "2.21.0",
+    "keras": "3.15.1",
+    "numpy": "2.4.6",
+    "scikit-learn": "1.9.0",
+    "scipy": "1.17.1",
+    "joblib": "1.6.0"
+  },
+  "seed": 42
+}
