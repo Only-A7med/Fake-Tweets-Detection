@@ -200,8 +200,13 @@ src/
 └── app/         # Flask app: UI, /predict, /health, startup artifact download
 scripts/         # upload_artifacts.py (one-time HF Hub upload)
 notebooks/       # EDA on TruthSeeker 2023
-tests/           # 75 tests, 87% coverage on src/
+docs/            # arabic-extension/ — dataset, embedding and model survey (planning only)
+tests/           # 133 tests, 87% coverage on src/
 ```
+
+The Arabic extension is at the planning stage. [`docs/arabic-extension/`](docs/arabic-extension/)
+surveys the candidate Arabic datasets, embeddings and transformers with their licences, and
+recommends one of each; no Arabic code or data is in the repository yet.
 
 ## Reproducibility notes
 
